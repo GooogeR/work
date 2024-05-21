@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Управление сотрудниками</title>
+<link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+<h1>Управление сотрудниками</h1>
+<button onclick="window.location.href='index.html'">Вернуться на главную</button>
+<form id="workerForm">
+    <input type="hidden" name="id" value="0">
+    <label for="firstName">Имя:</label>
+    <input type="text" id="firstName" name="firstName" required>
+    <label for="lastName">Фамилия:</label>
+    <input type="text" id="lastName" name="lastName" required>
+    <label for="middleName">Отчество:</label>
+    <input type="text" id="middleName" name="middleName">
+    <label for="orders">Номера заказов (через запятую):</label>
+    <input type="text" id="orders" name="orders">
+    <label for="totalOrders">Общее количество заказов:</label>
+    <input type="number" id="totalOrders" name="totalOrders">
+    <button type="submit">Сохранить</button>
+</form>
+<table>
+    <thead>
+     <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Отчество</th>
+        <th>Номера заказов</th>
+        <th>Всего заказов</th>
+        <th>Действия</th>
+     </tr>
+    </thead>
+    <tbody>
+     <!-- Данные сотрудников будут загружены сюда -->
+    </tbody>
+</table>
+<script src="js/workers.js"></script>
+</body>
+</html>
