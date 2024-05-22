@@ -1,0 +1,268 @@
+[{
+  "_id": {
+    "$oid": "663925cdcfdb61ff08baddad"
+  },
+  "number": "1",
+  "address": "Москва",
+  "items": [
+    {
+      "name": "Фенибут",
+      "quantity": "4",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dc44e958cadcf9f5a9256"
+      }
+    },
+    {
+      "name": "Натуралис гинкго билоба",
+      "quantity": "4",
+      "price": "319",
+      "_id": {
+        "$oid": "664dc44e958cadcf9f5a9257"
+      }
+    }
+  ],
+  "price": 1,
+  "status": "Завершен",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c5"
+  }
+},
+{
+  "_id": {
+    "$oid": "663925cecfdb61ff08baddae"
+  },
+  "number": "2",
+  "address": "Москва",
+  "items": [
+    {
+      "name": "Фенибут",
+      "quantity": "4",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dbf618413f755a48310fb"
+      }
+    },
+    {
+      "name": "Натуралис гинкго билоба",
+      "quantity": "4",
+      "price": "319",
+      "_id": {
+        "$oid": "664dbf618413f755a48310fc"
+      }
+    }
+  ],
+  "price": 5472,
+  "status": "Завершен",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c5"
+  }
+},
+{
+  "_id": {
+    "$oid": "663925cecfdb61ff08baddaf"
+  },
+  "number": "3",
+  "address": "Москва",
+  "items": [
+    {
+      "name": "Фенибут",
+      "quantity": "4",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dbf638413f755a483110d"
+      }
+    },
+    {
+      "name": "Натуралис гинкго билоба",
+      "quantity": "4",
+      "price": "319",
+      "_id": {
+        "$oid": "664dbf638413f755a483110e"
+      }
+    }
+  ],
+  "price": 5472,
+  "status": "Отменен",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c6"
+  }
+},
+{
+  "_id": {
+    "$oid": "663925cecfdb61ff08baddb0"
+  },
+  "number": "4",
+  "address": "Москва",
+  "items": [
+    {
+      "name": "Фенибут",
+      "quantity": "4",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dbf668413f755a483111f"
+      }
+    },
+    {
+      "name": "Натуралис гинкго билоба",
+      "quantity": "4",
+      "price": "319",
+      "_id": {
+        "$oid": "664dbf668413f755a4831120"
+      }
+    }
+  ],
+  "price": 5472,
+  "status": "Завершен",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c6"
+  }
+},
+{
+  "_id": {
+    "$oid": "663925cecfdb61ff08baddb1"
+  },
+  "number": "5",
+  "address": "Москва",
+  "items": [
+    {
+      "name": "Фенибут",
+      "quantity": "4",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dbf688413f755a4831131"
+      }
+    },
+    {
+      "name": "Натуралис гинкго билоба",
+      "quantity": "4",
+      "price": "319",
+      "_id": {
+        "$oid": "664dbf688413f755a4831132"
+      }
+    }
+  ],
+  "price": 5472,
+  "status": "Отменен",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c7"
+  }
+},
+{
+  "_id": {
+    "$oid": "663ec1bb336370d1ea8bd4e3"
+  },
+  "number": "6",
+  "address": "Артём",
+  "items": [
+    {
+      "name": "Фенибут",
+      "quantity": "5",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dbf6a8413f755a4831141"
+      }
+    }
+  ],
+  "price": 5245,
+  "status": "Отменен",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c7"
+  }
+},
+{
+  "_id": {
+    "$oid": "663ec6c7336370d1ea8bd4e4"
+  },
+  "number": "7",
+  "address": "г. Воронеж, 232 стр. Дивизии",
+  "items": [
+    {
+      "name": "Фенибут",
+      "quantity": "4",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dbf6d8413f755a483114f"
+      }
+    }
+  ],
+  "price": 4196,
+  "status": "Завершен",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c8"
+  }
+},
+{
+  "_id": {
+    "$oid": "663ef846336370d1ea8bd4e5"
+  },
+  "number": "8",
+  "address": "Москвааааа",
+  "items": [
+    {
+      "name": "Фенибут",
+      "quantity": "2",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dbf6f8413f755a483115d"
+      }
+    }
+  ],
+  "price": 2098,
+  "status": "Завершен",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c8"
+  }
+},
+{
+  "_id": {
+    "$oid": "663f22719250b63527ba2db5"
+  },
+  "number": "9",
+  "address": "Воронеж, ул. Димитрова 153",
+  "items": [
+    {
+      "name": "Серената",
+      "quantity": "7",
+      "price": "540",
+      "_id": {
+        "$oid": "664dbf728413f755a483116d"
+      }
+    },
+    {
+      "name": "Фенибут",
+      "quantity": "7",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dbf728413f755a483116e"
+      }
+    }
+  ],
+  "price": 11123,
+  "status": "Завершен",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c9"
+  }
+},
+{
+  "_id": {
+    "$oid": "664134b500b82b3b0cfccef6"
+  },
+  "number": "10",
+  "address": "Москва",
+  "items": [
+    {
+      "name": "Фенибут",
+      "quantity": "2",
+      "price": "1049",
+      "_id": {
+        "$oid": "664dbf758413f755a483117d"
+      }
+    }
+  ],
+  "price": 2098,
+  "status": "В обработке",
+  "worker": {
+    "$oid": "6647c6745e8e1998d95062c9"
+  }
+}]

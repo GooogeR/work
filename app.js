@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
-mongoose.connect("mongodb://localhost:27017/Medicine");
+mongoose.connect("mongodb://localhost:27017/Medicine"); // подключение к mongoDB
 
 app.use(
     express.static(__dirname + "/public", {

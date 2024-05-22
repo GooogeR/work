@@ -1,0 +1,65 @@
+[{
+  "_id": {
+    "$oid": "6647c6745e8e1998d95062c5"
+  },
+  "firstName": "Иван",
+  "lastName": "Иванов",
+  "middleName": "Иванович",
+  "orders": [
+    "2",
+    "1"
+  ],
+  "totalOrders": 2
+},
+{
+  "_id": {
+    "$oid": "6647c6745e8e1998d95062c6"
+  },
+  "firstName": "Петр",
+  "lastName": "Петров",
+  "middleName": "Петрович",
+  "orders": [
+    "3",
+    "4"
+  ],
+  "totalOrders": 2
+},
+{
+  "_id": {
+    "$oid": "6647c6745e8e1998d95062c7"
+  },
+  "firstName": "Сергей",
+  "lastName": "Сергеев",
+  "middleName": "Сергеевич",
+  "orders": [
+    "5",
+    "6"
+  ],
+  "totalOrders": 2
+},
+{
+  "_id": {
+    "$oid": "6647c6745e8e1998d95062c8"
+  },
+  "firstName": "Алексей",
+  "lastName": "Алексеев",
+  "middleName": "Алексеевич",
+  "orders": [
+    "7",
+    "8"
+  ],
+  "totalOrders": 2
+},
+{
+  "_id": {
+    "$oid": "6647c6745e8e1998d95062c9"
+  },
+  "firstName": "Дмитрий",
+  "lastName": "Дмитриев",
+  "middleName": "Дмитриевич",
+  "orders": [
+    "9",
+    "10"
+  ],
+  "totalOrders": 2
+}]
