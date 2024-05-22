@@ -51,7 +51,7 @@ const Worker = mongoose.model("workers", workersSchema);
 async function main() {
     try {
         await app.listen(PORT);
-        console.log(`Сервер подключен по адресу http://localhost:${PORT}`);
+        console.log(`Сервер был сопряжен с бд и подключен по localhost:${PORT}`);
     } catch (err) {
         console.log(err);
     }
@@ -59,6 +59,7 @@ async function main() {
 
 app.get("/api/orders", async (req, res) => {
     try {
+        // Используем populate для получения данных о сотрудниках
         const orders = await Order.find().populate("worker");
         res.json(orders);
     } catch (error) {
@@ -72,6 +73,7 @@ app.get("/api/workers", async (req, res) => {
 });
 
 app.get("/api/orders/:id", async (req, res) => {
+    // Используем populate для получения данных о сотрудниках
     const id = req.params.id;
     const order = await Order.findById(id).populate('worker');
     if (order) res.send(order);
@@ -97,7 +99,8 @@ app.post("/api/orders", async (req, res) => {
     if (!req.body) return res.status(400).send("Bad Request: No data provided");
 
     const { number, address, items, price, status, worker } = req.body;
-
+    
+    // Проверка наличия обязательных полей
     if (!number || !address || !price) {
         return res.status(400).send("Bad Request: Missing required fields");
     }
@@ -106,7 +109,7 @@ app.post("/api/orders", async (req, res) => {
         const order = new Order({
             number,
             address,
-            items,
+            items, // Убедитесь, что items корректно обрабатывается на клиенте и сервере
             price,
             status,
             worker,
@@ -119,7 +122,7 @@ app.post("/api/orders", async (req, res) => {
             await Worker.findByIdAndUpdate(worker, { $inc: { totalOrders: 1 } });
         }
 
-        res.status(201).send(order);
+        res.status(201).send(order); // Возвращаем статус 201 Created для успешного создания ресурса
     } catch (error) {
         res.status(500).send("Internal Server Error: Unable to save order");
     }
@@ -147,6 +150,7 @@ app.put("/api/orders/:id", async (req, res) => {
 
     const id = req.params.id;
     const { number, address, items, price, status, worker: newWorkerId } = req.body;
+    // Используем new: true для возврата обновленного документа и populate для получения данных о сотрудниках
 
     try {
         const existingOrder = await Order.findById(id);
@@ -205,6 +209,7 @@ async function updateWorkerTotalOrders(workerId) {
 }
 
 main();
+// прослушиваем прерывание работы программы (ctrl-c)
 process.on("SIGINT", async () => {
     await mongoose.disconnect();
     console.log("Приложение завершило работу");

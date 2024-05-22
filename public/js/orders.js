@@ -20,7 +20,6 @@ async function GetOrders() {
     }
 }
 
-
 // Функция для получения и отображения сотрудников
 async function GetWorkers() {
     try {
