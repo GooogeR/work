@@ -72,7 +72,7 @@ function row(order) {
 
     // Проверяем и выводим данные о сотруднике, если они есть
     console.log('Worker:', order.worker);
-    if (order.worker && order.worker.firstName && order.worker.lastName) {
+    if (order.worker && Object.keys(order.worker).length > 0 && order.worker.firstName && order.worker.lastName) {
         workerTd.textContent = `${order.worker.firstName} ${order.worker.lastName}`;
     } else {
         workerTd.textContent = "Не назначен";
@@ -105,7 +105,6 @@ function row(order) {
     return tr;
 }
 
-
 // Функция для получения данных одного заказа и заполнения формы
 async function GetOrder(id) {
     const response = await fetch("/api/orders/" + id, {
@@ -131,6 +130,26 @@ async function GetOrder(id) {
 // Функция для изменения заказа
 async function EditOrder(orderId, number, address, items, price, status, workerId) {
     console.log('Editing order with worker ID:', workerId);
+    
+    // Обновляем строку таблицы с новыми данными заказа
+    const existingRow = document.querySelector(`tr[data-rowid="${orderId}"]`);
+    const workerTd = existingRow.querySelector(".worker");
+    if (workerId !== "Не назначен") {
+        const workerResponse = await fetch(`/api/workers/${workerId}`, {
+            method: "GET",
+            headers: { Accept: "application/json" },
+        });
+        if (workerResponse.ok === true) {
+            const workerData = await workerResponse.json();
+            workerTd.textContent = `${workerData.firstName} ${workerData.lastName}`;
+        } else {
+            console.error("Ошибка при получении данных о сотруднике:", workerResponse.statusText);
+        }
+    } else {
+        workerTd.textContent = "Не назначен";
+    }
+    
+    // Отправляем запрос на обновление данных заказа на сервер
     const response = await fetch("/api/orders/" + orderId, {
         method: "PUT",
         headers: {
@@ -139,20 +158,17 @@ async function EditOrder(orderId, number, address, items, price, status, workerI
         },
         body: JSON.stringify({ number, address, items, price, status, worker: workerId }),
     });
+
     if (response.ok) {
         const order = await response.json();
         console.log('Order updated:', order);
-    
-        // Заменяем строку таблицы на новую строку с обновленными данными заказа
-        const updatedRow = row(order);
-        const existingRow = document.querySelector(`tr[data-rowid="${order._id}"]`);
-        existingRow.parentNode.replaceChild(updatedRow, existingRow);
-    
-        // Обновляем количество заказов у сотрудника только если он был назначен
+        // Если сотрудник был назначен, обновляем количество заказов у сотрудника
         if (workerId !== "Не назначен") {
             await updateWorkerOrders(workerId);
         }
-    }    
+    } else {
+        console.error("Ошибка при обновлении заказа:", response.statusText);
+    }
 }
 
 // Функция для добавления нового заказа

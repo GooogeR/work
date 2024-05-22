@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
+mongoose.connect("mongodb://localhost:27017/Medicine");
+
 app.use(
     express.static(__dirname + "/public", {
         setHeaders: (res, path, stat) => {
@@ -48,9 +50,8 @@ const Worker = mongoose.model("workers", workersSchema);
 
 async function main() {
     try {
-        await mongoose.connect("mongodb://127.0.0.1:27017/Medicine");
-        app.listen(PORT);
-        console.log(`Сервер был сопряжен с бд и подключен по localhost:${PORT}`);
+        await app.listen(PORT);
+        console.log(`Сервер подключен по адресу http://localhost:${PORT}`);
     } catch (err) {
         console.log(err);
     }
@@ -58,7 +59,6 @@ async function main() {
 
 app.get("/api/orders", async (req, res) => {
     try {
-        // Используем populate для получения данных о сотрудниках
         const orders = await Order.find().populate("worker");
         res.json(orders);
     } catch (error) {
@@ -66,24 +66,16 @@ app.get("/api/orders", async (req, res) => {
     }
 });
 
-
 app.get("/api/workers", async (req, res) => {
     const workers = await Worker.find({});
     res.send(workers);
 });
 
 app.get("/api/orders/:id", async (req, res) => {
-    try {
-        // Используем populate для получения данных о сотрудниках
-        const order = await Order.findById(req.params.id).populate("worker");
-        if (order) {
-            res.json(order);
-        } else {
-            res.sendStatus(404);
-        }
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
+    const id = req.params.id;
+    const order = await Order.findById(id).populate('worker');
+    if (order) res.send(order);
+    else res.sendStatus(404);
 });
 
 app.get("/api/workers/:id", async (req, res) => {
@@ -100,6 +92,7 @@ app.get("/api/workers/:id", async (req, res) => {
     }
 });
 
+// Добавление заказа с обновлением количества заказов у сотрудника
 app.post("/api/orders", async (req, res) => {
     if (!req.body) return res.status(400).send("Bad Request: No data provided");
 
@@ -120,12 +113,19 @@ app.post("/api/orders", async (req, res) => {
         });
 
         await order.save();
+
+        // Обновляем количество заказов у сотрудника
+        if (worker) {
+            await Worker.findByIdAndUpdate(worker, { $inc: { totalOrders: 1 } });
+        }
+
         res.status(201).send(order);
     } catch (error) {
         res.status(500).send("Internal Server Error: Unable to save order");
     }
 });
 
+// Добавление нового сотрудника
 app.post("/api/workers", async (req, res) => {
     if (!req.body || !req.body.firstName || !req.body.lastName) {
         return res.status(400).send("Bad Request: Missing required fields");
@@ -141,33 +141,68 @@ app.post("/api/workers", async (req, res) => {
     }
 });
 
-app.delete("/api/orders/:id", async (req, res) => {
-    const id = req.params.id;
-    const order = await Order.findByIdAndDelete(id);
-    if (order) res.send(order);
-    else res.sendStatus(404);
-});
-
+// Обновление заказа с обновлением количества заказов у сотрудника
 app.put("/api/orders/:id", async (req, res) => {
-    try {
-        const { number, address, items, price, status, worker } = req.body;
-        // Используем new: true для возврата обновленного документа и populate для получения данных о сотрудниках
-        const order = await Order.findByIdAndUpdate(
-            req.params.id,
-            { number, address, items, price, status, worker },
-            { new: true }
-        ).populate("worker");
+    if (!req.body) return res.sendStatus(400);
 
-        if (order) {
-            res.json(order);
-        } else {
-            res.sendStatus(404);
+    const id = req.params.id;
+    const { number, address, items, price, status, worker: newWorkerId } = req.body;
+
+    try {
+        const existingOrder = await Order.findById(id);
+        if (!existingOrder) {
+            return res.status(404).send("Order not found");
         }
+
+        const previousWorkerId = existingOrder.worker;
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            id,
+            { number, address, items, price, status, worker: newWorkerId },
+            { new: true }
+        );
+
+        // Обновляем количество заказов у сотрудников
+        if (previousWorkerId && previousWorkerId.toString() !== newWorkerId) {
+            await Worker.findByIdAndUpdate(previousWorkerId, { $pull: { orders: existingOrder.number }, $inc: { totalOrders: -1 } });
+        }
+
+        if (newWorkerId && previousWorkerId.toString() !== newWorkerId) {
+            await Worker.findByIdAndUpdate(newWorkerId, { $addToSet: { orders: number }, $inc: { totalOrders: 1 } });
+        }
+
+        res.send(updatedOrder);
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).send("Internal Server Error: Unable to update order");
     }
 });
 
+// Маршрут для обновления количества заказов у сотрудника
+app.put("/api/workers/:id/updateOrders", async (req, res) => {
+    const workerId = req.params.id;
+
+    try {
+        const worker = await Worker.findById(workerId);
+        if (!worker) {
+            return res.status(404).send('Worker not found');
+        }
+
+        // Обновляем количество заказов у сотрудника
+        const totalOrders = await Order.countDocuments({ worker: workerId });
+        worker.totalOrders = totalOrders;
+        await worker.save();
+
+        res.send(worker);
+    } catch (error) {
+        res.status(500).send('Internal Server Error: Unable to update worker total orders');
+    }
+});
+
+// Функция для обновления количества заказов у сотрудника
+async function updateWorkerTotalOrders(workerId) {
+    const totalOrders = await Order.countDocuments({ worker: workerId });
+    await Worker.findByIdAndUpdate(workerId, { totalOrders: totalOrders });
+}
 
 main();
 process.on("SIGINT", async () => {

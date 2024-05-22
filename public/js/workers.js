@@ -46,13 +46,13 @@ function row(worker) {
 
     // Создаем ячейку для списка номеров заказов сотрудника
     const ordersTd = document.createElement("td");
-    ordersTd.textContent = worker.orders.join(', '); // Исправлено: добавлен текст с номерами заказов сотрудника
-    tr.append(ordersTd);
-
+    ordersTd.textContent = worker.orders.join(', '); // Выводим номера заказов сотрудника через запятую
+    tr.append(ordersTd); // Добавляем созданную ячейку в строку таблицы
+    
     // Создаем ячейку для общего количества заказов сотрудника
     const totalOrdersTd = document.createElement("td");
-    totalOrdersTd.textContent = worker.totalOrders; // Исправлено: добавлен текст с общим количеством заказов сотрудника
-    tr.append(totalOrdersTd);
+    totalOrdersTd.textContent = worker.totalOrders; // Устанавливаем текстовое содержимое ячейки как общее количество заказов сотрудника
+    tr.append(totalOrdersTd); // Добавляем созданную ячейку в строку таблицы    
 
     // Создаем ячейки для кнопок редактирования и удаления сотрудника
     const linksTd = document.createElement("td");
