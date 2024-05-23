@@ -67,11 +67,11 @@ function row(order) {
     tr.append(statusTd);
 
     const workerTd = document.createElement("td");
-    workerTd.classList.add("worker"); // Добавляем класс "worker" к ячейке сотрудника
+    workerTd.classList.add("worker");
 
     // Проверяем и выводим данные о сотруднике, если они есть
     console.log('Worker:', order.worker);
-    if (order.worker && Object.keys(order.worker).length > 0 && order.worker.firstName && order.worker.lastName) {
+    if (order.worker && order.worker.firstName && order.worker.lastName) {
         workerTd.textContent = `${order.worker.firstName} ${order.worker.lastName}`;
     } else {
         workerTd.textContent = "Не назначен";
@@ -218,18 +218,24 @@ async function updateWorkerOrders(workerId) {
 
 // Функция для удаления заказа
 async function DeleteOrder(id) {
-    const response = await fetch("/api/orders/" + id, {
-        method: "DELETE",
-        headers: { Accept: "application/json" },
-    });
-    if (response.ok === true) {
-        const order = await response.json();
-        document.querySelector(`tr[data-rowid="${order._id}"]`).remove();
+    try {
+        const response = await fetch("/api/orders/" + id, {
+            method: "DELETE",
+            headers: { Accept: "application/json" },
+        });
+        if (response.ok === true) {
+            const order = await response.json();
+            document.querySelector(`tr[data-rowid="${order._id}"]`).remove();
 
-        // Обновляем данные сотрудника при успешном удалении заказа
-        if (order.worker) {
-            await updateWorkerOrders(order.worker._id);
+            // Обновляем данные сотрудника при успешном удалении заказа
+            if (order.worker && order.worker._id) {
+                await updateWorkerOrders(order.worker._id);
+            }
+        } else {
+            console.error("Ошибка при удалении заказа:", response.statusText);
         }
+    } catch (error) {
+        console.error("Ошибка при удалении заказа:", error);
     }
 }
 

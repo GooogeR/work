@@ -72,6 +72,27 @@ app.get("/api/workers", async (req, res) => {
     res.send(workers);
 });
 
+app.delete("/api/orders/:id", async (req, res) => {
+    const id = req.params.id;
+    const order = await Order.findByIdAndDelete(id);
+    if (order) res.send(order);
+    else res.sendStatus(404);
+  });
+
+  app.delete("/api/workers/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const worker = await Worker.findByIdAndDelete(id);
+        if (worker) {
+            res.send(worker);
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (error) {
+        res.status(500).send("Internal Server Error: Unable to delete worker");
+    }
+});
+
 app.get("/api/orders/:id", async (req, res) => {
     // Используем populate для получения данных о сотрудниках
     const id = req.params.id;
@@ -207,6 +228,7 @@ async function updateWorkerTotalOrders(workerId) {
     const totalOrders = await Order.countDocuments({ worker: workerId });
     await Worker.findByIdAndUpdate(workerId, { totalOrders: totalOrders });
 }
+  
 
 main();
 // прослушиваем прерывание работы программы (ctrl-c)
